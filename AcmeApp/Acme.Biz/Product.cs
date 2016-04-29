@@ -12,10 +12,16 @@ namespace Acme.Biz
     /// </summary>
     public class Product
     {
+        public const double InchesPerMeter = 39.37;
+        public readonly decimal MinimumPrice;
+
         #region Constructors
         public Product()
         {
             Console.WriteLine("Product instance created");
+            //this.ProductVendor = new Vendor();
+            this.MinimumPrice = .96m;
+            this.Category = "Tools";
         }
 
         public Product(int productId,
@@ -25,6 +31,10 @@ namespace Acme.Biz
             this.ProductId = productId;
             this.ProductName = productName;
             this.Description = description;
+            if (ProductName.StartsWith("Bulk"))
+            {
+                this.MinimumPrice = 9.99m;
+            }
 
             Console.WriteLine("Product instance has a name: " +
                                 ProductName);
@@ -33,12 +43,38 @@ namespace Acme.Biz
         #endregion
 
         #region Properties
+        private DateTime? availabilityDate;
+
+        public DateTime? AvailabilityDate
+        {
+            get { return availabilityDate; }
+            set { availabilityDate = value; }
+        }
+        
+
         private string productName; //field
 
         public string ProductName //property
         {
-            get { return productName; }
-            set { productName = value; }
+            get {
+                var formattedValue = productName?.Trim();
+                return formattedValue;
+            }
+            set {
+                if (value.Length < 3)
+                {
+                    ValidationMessage = "Product Name must be at least 3 characters";
+                }
+                else if (value.Length> 20)
+                {
+                    ValidationMessage = "Product Name cannot be more than 20 characters";
+                }
+                else
+                {
+                    productName = value;
+                }
+
+            }
         }
 
         private string description;
@@ -56,6 +92,26 @@ namespace Acme.Biz
             get { return productId; }
             set { productId = value; }
         }
+
+        private Vendor productVendor;
+
+        public Vendor ProductVendor
+        {
+            get { 
+                //Lazy loading
+                if (productVendor == null)
+                {
+                    productVendor = new Vendor();
+                }
+                return productVendor; 
+            }
+            set { productVendor = value; }
+        }
+
+        public string ValidationMessage { get; private set; }
+        public string Category { get; set; }
+        public int SequenceNumber { get; set; } = 1;
+
         #endregion
 
 
@@ -71,7 +127,9 @@ namespace Acme.Biz
 
             return "Hello " + ProductName +
                 " (" + ProductId + "): " +
-                Description;
+                Description +
+                " Available on: " +
+                AvailabilityDate?.ToShortDateString();
 
             
         }
