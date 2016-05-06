@@ -16,10 +16,32 @@ namespace Acme.Biz
         public string CompanyName { get; set; }
         public string Email { get; set; }
 
+        
+
+
+        /// <summary>
+        /// Send a product order to the vendor
+        /// </summary>
+        /// <param name="product">Product to order</param>
+        /// <param name="quantity">Quantity of the product to order</param>
+        /// <returns></returns>
+        public bool PlaceOrder(Product product, int quantity)
+        {
+            if (product == null)
+                throw new ArgumentNullException(nameof(product));
+            if (quantity <= 0)
+                throw new ArgumentOutOfRangeException(nameof(quantity));
+
+
+
+        }
+
+
         /// <summary>
         /// Sends an email to welcome a new vendor.
         /// </summary>
         /// <returns></returns>
+        /// 
         public string SendWelcomeEmail(string message)
         {
             var emailService = new EmailService();

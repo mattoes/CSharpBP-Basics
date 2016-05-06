@@ -108,10 +108,12 @@ namespace Acme.Biz
             set { productVendor = value; }
         }
 
+        //Auto-Implemented properties
         public string ValidationMessage { get; private set; }
-        public string Category { get; set; }
+        internal string Category { get; set; }
         public int SequenceNumber { get; set; } = 1;
 
+        public string ProductCode => this.Category + "-" + this.SequenceNumber;
         #endregion
 
 
