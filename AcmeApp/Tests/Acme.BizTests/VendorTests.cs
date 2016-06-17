@@ -94,7 +94,7 @@ namespace Acme.Biz.Tests
             Assert.AreEqual(expected.Message, actual.Message);
         }
 
-   
+
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -107,6 +107,23 @@ namespace Acme.Biz.Tests
             var actual = vendor.PlaceOrder(null, 12);
 
             // Assert
+
+        }
+
+        [TestMethod()]
+        public void PlaceOrderTest_WithAddress()
+        {
+            // Arrange
+            var vendor = new Vendor();
+            var product = new Product(1, "Saw", "");
+            var expected = new OperationResult(true, "Test With Address");
+
+            // Act
+            var actual = vendor.PlaceOrder(product, 12, includeAddress: true, sendCopy: false);
+
+            // Assert
+            Assert.AreEqual(expected.Success, actual.Success);
+            Assert.AreEqual(expected.Message, actual.Message);
 
         }
 

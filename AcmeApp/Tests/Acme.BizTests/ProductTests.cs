@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Acme.BizTests
 {
     [TestClass()]
@@ -251,6 +252,22 @@ namespace Acme.BizTests
 
             //Act
             var actual = currentProduct.ProductCode;
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+
+        }
+
+        [TestMethod]
+        public void CalculateSuggestedPriceTest()
+        {
+            //Arrange
+            var currentProduct = new Product(1, "Saw", "");
+            currentProduct.Cost = 50m;
+            var expected = 55m;
+
+            //Act
+            var actual = currentProduct.CalculateSuggestedPrice(10m);
 
             //Assert
             Assert.AreEqual(expected, actual);
